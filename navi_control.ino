@@ -32,6 +32,10 @@
 // Set up the bleKeyboard instance
 BleKeyboard bleKeyboard("NaviControl", "Joost Bijl", 100);
 
+// Debugging flag. Mostly controls if serial output is enabled. 
+// On the C3, the serial output blocks the device unless the serial monitor is attached
+const int DEBUG = 0;
+
 // Keypad library set up
 ////////////////////////
 
@@ -42,10 +46,11 @@ const byte COLS = 3;
 
 // for this project we'll number the keys, and use their value to 'press' the correct button
 char keys[ROWS][COLS] = {
-  {'1','4','7'},
-  {'2','5','8'},
-  {'3','6','9'}
+  {'1','2','3'},
+  {'4','5','6'},
+  {'7','8','9'}
 };
+
 
 // pin assignments (https://randomnerdtutorials.com/esp32-pinout-reference-gpios/)
 // IMPORTANT: choose pins that are actually broken out on your board, otherwise the ESP won't boot
@@ -55,8 +60,9 @@ char keys[ROWS][COLS] = {
 const int LED_PIN = 6;  
 
 // pins for keypad library, these need to be aligned with how you wired the buttons exactly. 
-byte colPins[COLS] = {0, 1, 2};  // left to right
-byte rowPins[ROWS] = {3, 4, 5};  // top to bottom
+byte rowPins[COLS] = {2, 1, 0};  // top to bottom
+byte colPins[ROWS] = {3, 4, 5};  // left to right
+
 
 // For OTA updates
 #include <WiFi.h>
@@ -116,12 +122,14 @@ char repeating_keys[10] = { '1', '4', '2', '5', '6', '8' };
 // Routine to send the keystrokes on a short press of the keypad
 void send_short_press(KeypadEvent key) {
   
-  Serial.print("Sending short press key ");
-  Serial.println(key);
+  if(DEBUG) {
+    Serial.print("Sending short press key ");
+    Serial.println(key);
+  }
   
   switch(key) {
     case '7': bleKeyboard.write('c'); flash_led(); break;
-    case '9': bleKeyboard.write('n'); flash_led(); break;
+    case '3': bleKeyboard.write('n'); flash_led(); break;
     
     case '1': bleKeyboard.write(KEY_MEDIA_VOLUME_UP); flash_led(); break;
     case '4': bleKeyboard.write(KEY_MEDIA_VOLUME_DOWN); flash_led(); break;   
@@ -138,12 +146,14 @@ void send_short_press(KeypadEvent key) {
 // Routine to send the keystrokes on a long press of the keypad
 void send_long_press(KeypadEvent key) {
   
-  Serial.print("Sending long press key for button ");
-  Serial.println(key);
+  if(DEBUG) {
+    Serial.print("Sending long press key for button ");
+    Serial.println(key);
+  }
   
   switch(key) {
     case '7': bleKeyboard.write('d'); flash_led(); break;
-    case '9': bleKeyboard.write('x'); update_navibox_firmware(); flash_led(); break; 
+    case '3': bleKeyboard.write('x'); update_navibox_firmware(); flash_led(); break; 
     
     case '1': send_repeating_key(KEY_MEDIA_VOLUME_UP); break;
     case '4': send_repeating_key(KEY_MEDIA_VOLUME_DOWN); break;
@@ -161,13 +171,13 @@ void send_repeating_key(uint8_t key) {
   
   digitalWrite(LED_PIN, HIGH);
   while(keypad.getState() == HOLD) {  
-    Serial.print('.');
+    //Serial.print('.');
     bleKeyboard.write(key);
     delay(long_press_repeat_interval); // pause between presses
     keypad.getKey(); // update keypad event handler
   }
   digitalWrite(LED_PIN, LOW);
-  Serial.println(' ');
+  //Serial.println(' ');
 }
 
 // Routine that sends a key repeatedly (for double char 'MediaKeyReport')
@@ -175,13 +185,13 @@ void send_repeating_key(const MediaKeyReport key) {
 
   digitalWrite(LED_PIN, HIGH);
   while(keypad.getState() == HOLD) {  
-    Serial.print('.');
+    //Serial.print('.');
     bleKeyboard.write(key);
     delay(long_press_repeat_interval); // pause between presses
     keypad.getKey(); // update keypad event handler
   }
   digitalWrite(LED_PIN, LOW);
-  Serial.println(' ');
+  //Serial.println(' ');
 }
 
 
@@ -192,21 +202,26 @@ void keypad_handler(KeypadEvent key){
   switch(keypad.getState()) {
 
     case PRESSED: // Directly on the press of a button
-      Serial.println("keypad.getState = PRESSED");
+      if(DEBUG) {
+        Serial.println("keypad.getState = PRESSED");
+      }
+      
       if (is_key_repeating(key)){
           send_short_press(key); 
       }
       break;
       
     case HOLD: // When a button is held beyond the long_press_time value
-      Serial.println("keypad.getState = HOLD");
+      if(DEBUG) { Serial.println("keypad.getState = HOLD"); }
       send_long_press(key);
       break;
 
     case RELEASED: // When a button is released 
-      Serial.println("keypad.getState = RELEASED");
-      Serial.print("Previous state: ");
-      Serial.println(last_keypad_state);
+      if(DEBUG) {
+        Serial.println("keypad.getState = RELEASED");
+        Serial.print("Previous state: ");
+        Serial.println(last_keypad_state);
+      }
 
       // 
       if (last_keypad_state == PRESSED) {
@@ -219,7 +234,7 @@ void keypad_handler(KeypadEvent key){
       break;
       
   case IDLE: // not sure why this generates a callback
-      Serial.println("keypad.getState = IDLE");
+      if(DEBUG) { Serial.println("keypad.getState = IDLE"); }
       break;
   }
 
@@ -229,7 +244,7 @@ void keypad_handler(KeypadEvent key){
 
 // Arduino built-in setup loop
 void setup(){
-  Serial.begin(9600);
+  if(DEBUG) { Serial.begin(9600); } 
   
   // Handle all keypad events through this listener 
   keypad.addEventListener(keypad_handler); // Add an event listener for this keypad
@@ -248,7 +263,7 @@ void setup(){
 
 
   // End of setup()
-  Serial.println("Good to go!");
+  if(DEBUG) { Serial.println("Good to go!"); }
 }
 
 void loop(){
@@ -297,14 +312,16 @@ void update_navibox_firmware() {
   // Variables to validate
   // response from S3
   long contentLength = 0;
-  bool isValidContentType = false;Serial.println("Connecting to " + String(SSID));
+  bool isValidContentType = false;
+  
+  if(DEBUG) { Serial.println("Connecting to " + String(SSID)); }
 
   // Connect to provided SSID and PSWD
   WiFi.begin(SSID, PSWD);
 
   // Wait for connection to establish
   while (WiFi.status() != WL_CONNECTED) {
-    Serial.print("."); // Keep the serial monitor lit!
+    if(DEBUG) { Serial.print("."); } // Keep the serial monitor lit! 
     digitalWrite(LED_PIN, HIGH);
     delay(250);
     digitalWrite(LED_PIN, LOW);
@@ -313,16 +330,18 @@ void update_navibox_firmware() {
   digitalWrite(LED_PIN, HIGH);
 
   // Connection Succeed
-  Serial.println("");
-  Serial.println("Connected to " + String(SSID));
+  if(DEBUG) {
+    Serial.println("");
+    Serial.println("Connected to " + String(SSID));
+  }
 
   // Execute OTA Update
-  Serial.println("Connecting to: " + String(host));
+  if(DEBUG) { Serial.println("Connecting to: " + String(host)); }
   
   if (client.connect(host.c_str(), port)) {
     // Connection Succeed.
     // Fecthing the bin
-    Serial.println("Fetching Bin: " + String(bin));
+    if(DEBUG) { Serial.println("Fetching Bin: " + String(bin)); }
 
     // Get the contents of the bin file
     client.print(String("GET ") + bin + " HTTP/1.1\r\n" +
@@ -339,7 +358,7 @@ void update_navibox_firmware() {
     unsigned long timeout = millis();
     while (client.available() == 0) {
       if (millis() - timeout > 5000) {
-        Serial.println("Client Timeout !");
+        if(DEBUG) { Serial.println("Client Timeout !"); }
         client.stop();
         return;
       }
@@ -384,7 +403,7 @@ void update_navibox_firmware() {
       // else break and Exit Update
       if (line.startsWith("HTTP/1.1")) {
         if (line.indexOf("200") < 0) {
-          Serial.println("Got a non 200 status code from server. Exiting OTA Update.");
+          if(DEBUG) { Serial.println("Got a non 200 status code from server. Exiting OTA Update."); }
           break;
         }
       }
@@ -393,13 +412,13 @@ void update_navibox_firmware() {
       // Start with content length
       if (line.startsWith("Content-Length: ")) {
         contentLength = atol((getHeaderValue(line, "Content-Length: ")).c_str());
-        Serial.println("Got " + String(contentLength) + " bytes from server");
+        if(DEBUG) { Serial.println("Got " + String(contentLength) + " bytes from server"); }
       }
 
       // Next, the content type
       if (line.startsWith("Content-Type: ")) {
         String contentType = getHeaderValue(line, "Content-Type: ");
-        Serial.println("Got " + contentType + " payload.");
+        if(DEBUG) { Serial.println("Got " + contentType + " payload."); }
         if (contentType == "application/octet-stream") {
           isValidContentType = true;
         }
@@ -409,13 +428,13 @@ void update_navibox_firmware() {
     // Connect to S3 failed
     // May be try?
     // Probably a choppy network?
-    Serial.println("Connection to " + String(host) + " failed. Please check your setup");
+    if(DEBUG) { Serial.println("Connection to " + String(host) + " failed. Please check your setup"); }
     // retry??
     // execOTA();
   }
 
   // Check what is the contentLength and if content type is `application/octet-stream`
-  Serial.println("contentLength : " + String(contentLength) + ", isValidContentType : " + String(isValidContentType));
+  if(DEBUG) { Serial.println("contentLength : " + String(contentLength) + ", isValidContentType : " + String(isValidContentType)); } 
 
   // check contentLength and content type
   if (contentLength && isValidContentType) {
@@ -424,39 +443,39 @@ void update_navibox_firmware() {
 
     // If yes, begin
     if (canBegin) {
-      Serial.println("Begin OTA. This may take 2 - 5 mins to complete. Things might be quite for a while.. Patience!");
+      if(DEBUG) { Serial.println("Begin OTA. This may take 2 - 5 mins to complete. Things might be quite for a while.. Patience!"); } 
       // No activity would appear on the Serial monitor
       // So be patient. This may take 2 - 5mins to complete
       size_t written = Update.writeStream(client);
 
       if (written == contentLength) {
-        Serial.println("Written : " + String(written) + " successfully");
+        if(DEBUG) { Serial.println("Written : " + String(written) + " successfully"); }
       } else {
-        Serial.println("Written only : " + String(written) + "/" + String(contentLength) + ". Retry?" );
+        if(DEBUG) { Serial.println("Written only : " + String(written) + "/" + String(contentLength) + ". Retry?" ); }
         // retry??
         // execOTA();
       }
 
       if (Update.end()) {
-        Serial.println("OTA done!");
+        if(DEBUG) { Serial.println("OTA done!"); }
         if (Update.isFinished()) {
-          Serial.println("Update successfully completed. Rebooting.");
+          if(DEBUG) { Serial.println("Update successfully completed. Rebooting."); }
           ESP.restart();
         } else {
-          Serial.println("Update not finished? Something went wrong!");
+          if(DEBUG) { Serial.println("Update not finished? Something went wrong!"); }
         }
       } else {
-        Serial.println("Error Occurred. Error #: " + String(Update.getError()));
+        if(DEBUG) { Serial.println("Error Occurred. Error #: " + String(Update.getError())); }
       }
     } else {
       // not enough space to begin OTA
       // Understand the partitions and
       // space availability
-      Serial.println("Not enough space to begin OTA");
+      if(DEBUG) { Serial.println("Not enough space to begin OTA"); }
       client.flush();
     }
   } else {
-    Serial.println("There was no content in the response");
+    if(DEBUG) { Serial.println("There was no content in the response"); }
     client.flush();
   } 
 }
