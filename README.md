@@ -1,8 +1,16 @@
 # navibox
 Arduino code to control phone navigation via handlebar buttons
 
-![wiring](https://raw.githubusercontent.com/joostbijl/navibox/main/navicontrol%20wiring.png)
+## Circuit
+Connect the circuit from the buttons to the Arduino like this:
+![wiring](https://raw.githubusercontent.com/joostbijl/navibox/main/navibox%20circuit.png)
 
+The color coding assumes you are using a UTP cable.
+
+## Status led
+![status led](https://raw.githubusercontent.com/joostbijl/navibox/main/navibox%20status%20led.png)
+
+## Keys
 | key | Short press | Long press |
 |-----|---|---|
 | 1 | Zoom in (vol up) | Repeat |
