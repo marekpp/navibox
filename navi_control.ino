@@ -11,7 +11,7 @@
  * 
  * 
  * How to build for Wemos C3 mini:
- * - Install https://github.com/T-vK/ESP32-BLE-Keyboard 0.3.0. Don't use NimBLE support since this did not work for me
+ * - Install https://github.com/T-vK/ESP32-BLE-Keyboard 0.3.1-beta or higher. Don't use NimBLE support since this did not work for me
  * - Install keypad library
  * - Update ESP32 board library to at least 2.0.3rc1 to support C3 - add https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json to additional board url in preferences
  * - Choose LOLIN C3 mini board in IDE
