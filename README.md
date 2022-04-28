@@ -22,6 +22,12 @@ The color coding assumes you are using a UTP cable.
 | 7 | Center map (c) | Change map view (d) |
 | 3 | Start/stop Navigation (n) | Start OTA update |
 
+## Case
+In the 'navibox' directory are the 3D files to use with a 3D printer. 
+
+Hints for best results:
+* Print the back of the case with the back on the plate. This way you only have to remove the support for the overhang that makes room for the mirror
+* Print the front of the case with the front facing up. This way the front looks best. You do need to remove the support from the inside though.
 
 # More info
 See https://jaxeadv.com/gear-gadgets/navigation-setup/handlebar-buttons/
