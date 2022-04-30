@@ -44,6 +44,21 @@ To use a Wemos C3 Mini board, follow these steps:
 * Set partition scheme to 'Minimal SPIFFS' (after restart of IDE)
 * Before uploading from Arduino IDE, press and hold button 9, press and release RST, release button 9 when you hear the 'new device' sound.
 
+## Component list
+You need these items to assemble a navibox unit:
+|Component|Amount|Notes|
+|---|---|---|
+|Buttons|8|https://www.aliexpress.com/item/32672509409.html?spm=a2g0o.9042311.0.0.27424c4dFWvWvS|
+|Led|1|https://www.aliexpress.com/item/1000007251357.html?spm=a2g0o.9042311.0.0.27424c4dFWvWvS|
+|Wemos C3 mini|1|https://www.wemos.cc/en/latest/c3/c3_mini.html|
+|Buck converter|1|https://www.aliexpress.com/item/32817933017.html?spm=a2g0o.9042311.0.0.27424c4dFWvWvS|
+|Fuse holder|1|https://www.aliexpress.com/item/32984778910.html?spm=a2g0o.9042311.0.0.27424c4dwZ6pHM|
+|Battery terminal connectors|2|To securely connect to the on-board power of your bike|
+|Power cable||I  have used red/black speaker cable, length dependent on your setup|
+|UTP cable||Length dependent on your setup|
+|Screws for case assembly|4|12,6mm length, 2,8mm width, philips head|
+|M4 nut|2|Designed for the regular variety, nylock will extrude a bit|
+|M4x25 hex screw|2|To mount navibox to your handlebar. If you use 1 or more spacers, add 5mm per spacer|
 
 
 # More info
