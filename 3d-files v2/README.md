@@ -6,4 +6,4 @@ Supply power by connecting a usb cable to the Arduino. Cut off the micro/mini/us
 * Connect the black wire to the gnd pin on the Arduino board
 * Connect the red wire to the vbus pin on the Arduino board
 
-https://github.com/joostbijl/navibox/blob/main/3d-files%20v2/circuit%20and%20buttons.png?raw=true
+![wiring](https://raw.githubusercontent.com/joostbijl/navibox/main/3d-files%20v2/circuit%20and%20buttons.png)
