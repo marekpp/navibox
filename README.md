@@ -71,9 +71,5 @@ Program the Arduino. To use a Wemos C3 Mini board, follow these steps:
 * Use spacer to get enough room for the navibox
 * Mount with an M4 screw. If you have no spacers, use a 25mmscrew, otherwise use longer screws. Be careful with tightening it, it's only M4.
 
-
-
-
-
-# More info
+## Use it
 See https://jaxeadv.com/gear-gadgets/navigation-setup/handlebar-buttons/
