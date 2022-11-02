@@ -35,8 +35,10 @@ The code can run on any ESP32 that has bluetooth capabilities.
 To use a Wemos C3 Mini board, follow these steps:
 * Install https://github.com/T-vK/ESP32-BLE-Keyboard 0.3.1-beta or higher. Don't use NimBLE support since this did not work for me
 * Install keypad library
-* Update ESP32 board library to at least 2.0.3rc1 to support C3 - add https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json to additional board url in preferences
-* Update partition scheme in order to facilitate OTA updates
+* Install ESP32 board library, at least version 2.0.3rc1 to support C3. Add one of these URLs as additional board locations in the Arduino IDE preferences
+  * Stable version: `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json`
+  * Development preview `https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json`
+* Update partition scheme (in order to facilitate OTA updates)
   * Exit the Arduino IDE
   * Update partition scheme in `Userdirectory:AppData\Local\Arduino15\packages\esp32\hardware\esp32\2.0.3-RC1\boards.txt` to add an option for minimal spiffs to accomodate larger images by adding these lines:
     * `lolin_c3_mini.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)`
