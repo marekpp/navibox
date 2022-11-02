@@ -1,6 +1,8 @@
 # navibox
 Arduino code to control phone navigation via handlebar buttons
 
+![wiring](https://raw.githubusercontent.com/joostbijl/navibox/main/circuit%20and%20buttons.png)
+
 
 
 ## Buy it
