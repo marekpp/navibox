@@ -42,7 +42,7 @@ To use a Wemos C3 Mini board, follow these steps:
     * `lolin_c3_mini.menu.PartitionScheme.min_spiffs=Minimal SPIFFS (1.9MB APP with OTA/190KB SPIFFS)`
     * `lolin_c3_mini.menu.PartitionScheme.min_spiffs.build.partitions=min_spiffs`
     * `lolin_c3_mini.menu.PartitionScheme.min_spiffs.upload.maximum_size=1966080`
-  * Remove the directory `Userdirectory:/AppData/Roaming/arduino-ide/` (due to a [bug](https://github.com/arduino/arduino-ide/issues/1030))
+  * Remove the directory `Userdirectory:/AppData/Roaming/arduino-ide/` (due to a [bug](https://github.com/arduino/arduino-ide/issues/1030) in Arduino IDE)
   * Start Arduino IDE
   * Choose LOLIN C3 mini board in IDE
   * Set partition scheme to 'Minimal SPIFFS' (after restart of IDE) (If the partition scheme is not available, restart Arduino IDE one more time)
