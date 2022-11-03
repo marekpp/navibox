@@ -61,6 +61,7 @@ Program the Arduino. To use a Wemos C3 Mini board, follow these steps:
     * Connect the black wire to the gnd pin on the Arduino board
     * Connect the red wire to the vbus pin on the Arduino board
     * Make sure to route the cable through the housing before soldering
+    * Don't forget to zip tie the cable from the inside to secure it
 
 ## Assemble it
 * Mount the Wemos C3 mini Arduino with 2mm screws of 6mm length (2x) to the inside of the case
