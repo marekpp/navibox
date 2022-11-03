@@ -44,6 +44,10 @@ Program the Arduino. To use a Wemos C3 Mini board, follow these steps:
   * Set partition scheme to 'Minimal SPIFFS' (after restart of IDE) (If the partition scheme is not available, restart Arduino IDE one more time)
 * Before uploading from Arduino IDE, press and hold button 9, press and release RST, release button 9 when you hear the 'new device' sound.
 
+## Button it
+* Add the buttons to the front panel. 
+* Tighten te screw on the back of the buttons securely, but don't overtighten it
+
 ## Solder it
 * The buttons are connected in a keymap configuration to the arduino:
   * Use the diagram above as a guide for connecting the buttons
@@ -59,7 +63,7 @@ Program the Arduino. To use a Wemos C3 Mini board, follow these steps:
     * Make sure to route the cable through the housing before soldering
 
 ## Assemble it
-* Mount the Wemos C3 mini Arduino with 2mm screws of 6mm lenght (2x) to the inside of the case
+* Mount the Wemos C3 mini Arduino with 2mm screws of 6mm length (2x) to the inside of the case
 * Put 2 m4 nuts in the recesses. Press pull them, or heat them slightly with a soldering iron
 * Put the front (with the buttons) on the back, and be careful not to pinch the wires to the buttons
 
